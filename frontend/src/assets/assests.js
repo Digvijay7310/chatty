@@ -13,10 +13,14 @@ import avatar_icon from './avatar_icon.jpg'
 import menu_icon from './menu_icon.jpg'
 import arrow_icon from './arrow_icon.jpg'
 import help_icon from './help_icon.jpg'
+import gallery_icon from './gallery_icon.jpg'
+import logo_big from './logo_big.jpg'
+import logo_icon from './logo_icon.jpg'
 
 const assets = {
     img1, img2, img3, user1, user2, user3, user4, user5, bg_image, logo
-    ,search_icon, avatar_icon, menu_icon, arrow_icon, help_icon
+    ,search_icon, avatar_icon, menu_icon, arrow_icon, help_icon,
+    gallery_icon, logo_big, logo_icon
 }
 export default assets;
 
@@ -83,7 +87,7 @@ export const messagesDummyData = [
         "receiverId": "384875f849rj49946",
         "text": "How is Your day now",
         "seen": "true",
-        // "image": img1,
+        "image": img1,
         "createdAt": "2025-04-28T10:25:27.844Z",
     },
     {
@@ -92,7 +96,7 @@ export const messagesDummyData = [
         "receiverId": "384875f849rj49947",
         "text": "Lorem",
         "seen": "true",
-        // "image": img2,
+        "image": img2,
         "createdAt": "2025-04-28T10:26:27.844Z",
     },
     {
@@ -101,7 +105,7 @@ export const messagesDummyData = [
         "receiverId": "384875f849rj49946",
         "text": "jhkjh",
         "seen": "true",
-        // "image": img3,
+        "image": img3,
         "createdAt": "2025-04-28T10:27:27.844Z",
     },
     {
