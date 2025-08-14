@@ -8,7 +8,7 @@ axios.defaults.baseURL = backendUrl;
 
 export const AuthContext = createContext();
 
-export const AuthProvider = () => {
+export const AuthProvider = ({children}) => {
 
     const [token, setToken] = useState(localStorage.getItem("token"))
     const [authUser, setAuthUser] = useState(null);
@@ -23,6 +23,8 @@ export const AuthProvider = () => {
           if(data.success) {
             setAuthUser(data.user)
             connectSocket(data.user)
+            console.log("Connecting socket with userId:", userData?._id)
+
           }
         } catch (error) {
             toast.error(error.message)
@@ -57,7 +59,7 @@ export const AuthProvider = () => {
         setOnlineUsers([])
         axios.defaults.headers.common["token"] = null;
         toast.success("Logout successfully")
-        socket.disconnect();
+        socket?.disconnect();
     }
 
     // Update profile cfunction to handke user profile updates
@@ -75,13 +77,17 @@ export const AuthProvider = () => {
      
     // Connect socket function to handle socket connection and online users updater
     const connectSocket  = (userData) => {
-        if(!userData || socket?.connected) return 
+        if(!userData || socket?.connected) return;
+
         const newSocket = io(backendUrl, {
             query: {
                 userId: userData._id,
-            }
+            },
+                reconnection:true,
+                reconnectionAttempts: 5,
+                reconnectionDelay: 1000,
         });
-        newSocket.connect()
+        // newSocket.connect()
         setSocket(newSocket);
 
         newSocket.on("getOnlineUsers", (userIds)=> {
@@ -92,8 +98,10 @@ export const AuthProvider = () => {
     useEffect(()=> {
         if(token){
             axios.defaults.headers.common["token"] = token;
+             checkAuth()
         }
-        checkAuth
+        
+       
     },[])
     const value = {
         axios,

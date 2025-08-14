@@ -5,7 +5,7 @@ import { generateToken } from "../lib/utils.js";
 import cloudinary  from "../lib/cloudinary.js"
 
 // Signup new user
-export const signup = async ()=> {
+export const signup = async (req, res)=> {
     const {fullName, email, password, bio} = req.body;
 
     try {
@@ -48,7 +48,7 @@ export const login = async(req, res) => {
         return res.json({success: false, message: "Invalid credentials"})
      }
 
-     const token  = generateToken(newUser._id)
+     const token  = generateToken(userData._id)
 
      res.json({success: true, userData, token, message: "Login successfull"})
    } catch (error) {

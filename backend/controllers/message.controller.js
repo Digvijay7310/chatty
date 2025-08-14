@@ -11,7 +11,7 @@ export const getUserForSidebar = async (req, res) => {
         const filteredUsers = await User.find({_id: {$ne: userId}}).select("-password");
 
          // Count number of messages not seen
-         const usseenMessages = {}
+         const unseenMessages = {};
          const promises = filteredUsers.map(async (user) => {
             const messages = await Message.find({senderId: user._id, receiverId: userId, seen: false})
             if(messages.length > 0){
@@ -35,7 +35,7 @@ export const getMessages = async(req, res) => {
         const messages = await Message.find({
             $or: [
                 {senderId: myId, receiverId: selectedUserId},
-                {re: selectedUserId, receiverId: myId},
+                {senderId: selectedUserId, receiverId: myId},
             ]
         })
         await Message.updateMany({senderId: selectedUserId, receiverId: myId}, {seen: true})
@@ -75,7 +75,7 @@ export const sendMessage = async(req, res) => {
             senderId, receiverId, text, image: imageUrl
         })
         // Emit the new messages to the receivers socket
-        const receiverSocketId = userSocketMap(receiverId);
+        const receiverSocketId = userSocketMap[receiverId];
         if(receiverSocketId){
             io.to(receiverSocketId).emit("newMessage", newMessage)
         }
