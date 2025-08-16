@@ -4,6 +4,8 @@ import assets from "../assets/assests";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { ChatContext } from "../../context/ChatContext";
+import { LuSearchCheck } from "react-icons/lu"
+import { BsThreeDotsVertical } from "react-icons/bs";
 
 function Sidebar() {
 
@@ -26,14 +28,15 @@ function Sidebar() {
 
     return (
         <div
-            className={`bg-[#8185b2]/10 h-full p-5 rounded-r-xl overflow-y-scroll text-white ${selectedUser ? "max-m-hidden" : ""
+            className={`bg-black/10 h-full p-5 rounded-r-xl overflow-y-scroll text-white ${selectedUser ? "max-m-hidden" : ""
                 }`}
         >
             <div className="pb-5">
                 <div className="flex justify-between items-center">
-                    <img src={assets.logo} alt="logo" className="max-w-20" />
+                    <img src={assets.logo} alt="logo" className="max-w-10 rounded-full" />
                     <div className="relative py-2 group">
-                        <img src={assets.menu_icon} className="cursor-pointer h-4" />
+                        <BsThreeDotsVertical size={20}/>
+
                         <div className="absolute top-full right-0 z-20 w-32 p-5 rounded-md bg-[#2822142] border border-gray-600 text-gray-100 hidden group-hover:block">
                             <p
                                 onClick={() => navigate("/profile")}
@@ -47,8 +50,8 @@ function Sidebar() {
                     </div>
                 </div>
 
-                <div className="bg-[#282142] rounded-full flex items-center gap-2 py-3 px-4 mt-5">
-                    <img src={assets.search_icon} alt="Search" className="w-3" />
+                <div className="bg-zinc-900 rounded-full flex items-center gap-2 py-3 px-4 mt-5">
+                    <LuSearchCheck />
                     <input
                     onChange={(e)=> setInput(e.target.value)}
                     value={input}
@@ -61,7 +64,7 @@ function Sidebar() {
 
             <div className="flex flex-col">
                 {filteredUsers.map((user, index) => (
-                    <div onClick={()=> (setSelectedUser(user))}
+                    <div onClick={()=> (setSelectedUser(user), setUnseenMessages((prev) => ({...prev, [users._id]:0})))}
                     key={index}
                      className={`relative flex items-center gap-2 p-2 lp-4 rounded cursor-pointer max-sm:text-sm ${selectedUser?._id === user._id && 'bg-[#282142]/50'}`}>
                         <img
@@ -77,9 +80,9 @@ function Sidebar() {
                                 <span className="text-neutral-400 text-xs">Offline</span>
                             )}
                         </div>
-                        {unSeenMessages[user._id]  && (
+                        {unSeenMessages?.[user._id]  && (
                             <p className="absolute top-4 right-4 text-xs h-5 w-5 flex justify-center items-center rounded-full bg-violet-500/50">
-                                {unSeenMessages[user._id]}
+                                {unSeenMessages?.[user._id]}
                             </p>
                         )}
                     </div>

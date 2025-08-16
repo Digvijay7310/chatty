@@ -5,9 +5,13 @@ import LoginPage from "./pages/LoginPage"
 import ProfilePage from "./pages/ProfilePage"
 import {Toaster} from 'react-hot-toast'
 import { AuthContext } from "../context/AuthContext"
+import ChatLoading from "./components/ChatLoading"
 
 function App() {
-  const {authUser} = useContext(AuthContext)
+  const {authUser, loading} = useContext(AuthContext)
+  if(loading) return <div className="flex justify-center items-center h-screen w-full">
+    <ChatLoading/>
+  </div>
   return (
     <div className="bg-[url('./src/assets/bg_image.jpg')] bg-contain">
       <Toaster/>

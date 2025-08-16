@@ -14,6 +14,7 @@ export const AuthProvider = ({children}) => {
     const [authUser, setAuthUser] = useState(null);
     const [onlineUsers, setOnlineUsers] = useState([]);
     const [socket, setSocket] = useState(null);
+    const [loading, setLoading] = useState(false)
 
     // Check if user is authenticated and if so, set the user data and connect the socket
 
@@ -23,12 +24,14 @@ export const AuthProvider = ({children}) => {
           if(data.success) {
             setAuthUser(data.user)
             connectSocket(data.user)
-            console.log("Connecting socket with userId:", userData?._id)
+            // console.log("Connecting socket with userId:", data.user?._id)
 
           }
         } catch (error) {
             toast.error(error.message)
-        }
+        } finally {
+        setLoading(false);  // mark loading complete
+    }
     }
 
     // Login function to handle user authentication and socket connection
@@ -100,7 +103,7 @@ export const AuthProvider = ({children}) => {
             axios.defaults.headers.common["token"] = token;
              checkAuth()
         }
-        
+
        
     },[])
     const value = {
@@ -110,11 +113,12 @@ export const AuthProvider = ({children}) => {
         socket,
         login, 
         logout,
-        updateProfile
+        updateProfile,
+        loading
     }
 
     return (
-        <AuthContext.Provider value={value}>
+        <AuthContext.Provider value={{...value, loading}}>
             {children}
         </AuthContext.Provider>
     )
